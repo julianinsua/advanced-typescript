@@ -23,3 +23,19 @@ export enum HTTP_METHODS {
   POST = 'POST',
   DELETE = 'DELETE',
 }
+
+export interface User {
+  id: string
+  name: string
+  age: number
+  email: string
+  workingPosition: WORKING_POSITION
+}
+
+export enum WORKING_POSITION {
+  JUNIOR,
+  PROGRAMMER,
+  ENGINEER,
+  EXPERT,
+  MANAGER,
+}

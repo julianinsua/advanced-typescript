@@ -20,4 +20,19 @@ export class SessionTokenDBAccess {
       })
     })
   }
+
+  public getToken(tokenId: string): Promise<SessionToken | undefined> {
+    return new Promise((resolve, reject) => {
+      this.nedb.find({ tokenId }, (e: Error | null, sessionTokens: SessionToken[]) => {
+        if (e) {
+          reject(e)
+        } else if (sessionTokens.length === 0) {
+          resolve(undefined)
+        } else {
+          const [firstSessionToken] = sessionTokens
+          resolve(firstSessionToken)
+        }
+      })
+    })
+  }
 }
