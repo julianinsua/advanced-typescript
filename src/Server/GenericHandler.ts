@@ -45,4 +45,8 @@ export abstract class GenericHandler {
   protected async handleBadRequest(message: string): Promise<void> {
     await this.writeResponse(HTTP_CODES.BAD_REQUEST, message)
   }
+
+  protected async handleNotAuthenticated(): Promise<void> {
+    await this.writeResponse(HTTP_CODES.NOT_AUTHENTICATED, {message: "Not authenticated"})
+  }
 }

@@ -25,23 +25,28 @@ export class UsersHandler extends GenericHandler implements Handler {
   }
 
   private async handleGet() {
-    const isAuthorized = await this.operationAuthorized(AccessRight.READ)
-    if (isAuthorized) {
-      const {
-        query: { id },
-      } = Utils.getUrlParameters(this.req.url)!
-      if (id) {
-        const user = await this.usersDbAccess.getUserById(id as string)
-        if (user) {
-          await this.writeResponse(HTTP_CODES.OK, user)
+    const operationAuthorized = await this.operationAuthorized(AccessRight.READ)
+    if(operationAuthorized) {
+      const isAuthorized = await this.operationAuthorized(AccessRight.READ)
+      if (isAuthorized) {
+        const {
+          query: { id },
+        } = Utils.getUrlParameters(this.req.url)!
+        if (id) {
+          const user = await this.usersDbAccess.getUserById(id as string)
+          if (user) {
+            await this.writeResponse(HTTP_CODES.OK, user)
+          } else {
+            await this.handleNotFound()
+          }
         } else {
-          await this.handleNotFound()
+          await this.handleBadRequest('No user id on request')
         }
       } else {
-        await this.handleBadRequest('No user id on request')
+        await this.writeResponse(HTTP_CODES.BAD_REQUEST, { message: 'not authenticated' })
       }
     } else {
-      await this.writeResponse(HTTP_CODES.BAD_REQUEST, { message: 'not authenticated' })
+      await this.handleNotAuthenticated()
     }
   }
 
