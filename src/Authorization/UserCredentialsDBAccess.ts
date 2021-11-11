@@ -1,5 +1,5 @@
 import { UserCredentials } from '../Shared/Model'
-import * as Nedb from 'nedb'
+import Nedb = require('nedb')
 
 export class UserCredentialsDBAccess {
   private nedb: Nedb
